@@ -1,0 +1,474 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Play It Forward — Wandera & Friends Cup</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,800&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#101314;        /* near-black, slightly green-warm */
+    --paper:#F7F5EF;      /* off-white, not pure */
+    --clay:#C8442B;       /* the ball — vermilion-clay */
+    --net:#1F6F5C;        /* deep table-green for the net/cause */
+    --line:#2A2E2F;       /* table edge line */
+    --muted:#6B716E;
+    --paper-2:#EEEBE2;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{
+    background:var(--paper);color:var(--ink);
+    font-family:'Inter',sans-serif;line-height:1.55;
+    -webkit-font-smoothing:antialiased;overflow-x:hidden;
+  }
+  h1,h2,h3{font-family:'Bricolage Grotesque',sans-serif;line-height:1.0;letter-spacing:-0.02em;font-weight:800}
+  .mono{font-family:'JetBrains Mono',monospace}
+  a{color:inherit;text-decoration:none}
+  .wrap{max-width:1180px;margin:0 auto;padding:0 28px}
+
+  /* ---- nav ---- */
+  nav{position:sticky;top:0;z-index:50;background:rgba(247,245,239,.82);backdrop-filter:blur(10px);border-bottom:1px solid rgba(42,46,47,.12)}
+  .nav-in{display:flex;align-items:center;justify-content:space-between;height:66px}
+  .brand{display:flex;align-items:center;gap:10px;font-family:'Bricolage Grotesque';font-weight:800;font-size:18px;letter-spacing:-0.03em}
+  .brand .dot{width:13px;height:13px;border-radius:50%;background:var(--clay);display:inline-block;box-shadow:0 0 0 3px rgba(200,68,43,.18)}
+  .nav-links{display:flex;gap:26px;align-items:center;font-size:14px;font-weight:500}
+  .nav-links a{color:var(--muted);transition:color .2s}
+  .nav-links a:hover{color:var(--ink)}
+  .cart-btn{display:flex;align-items:center;gap:8px;background:var(--ink);color:var(--paper);padding:9px 16px;border-radius:40px;font-size:13px;font-weight:600;border:none;cursor:pointer;font-family:inherit}
+  .cart-btn .count{background:var(--clay);min-width:19px;height:19px;border-radius:50%;display:inline-grid;place-items:center;font-size:11px;font-family:'JetBrains Mono'}
+
+  /* ---- hero: the rally ---- */
+  .hero{position:relative;padding:72px 0 40px;overflow:hidden}
+  .eyebrow{font-family:'JetBrains Mono';font-size:12.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--net);margin-bottom:22px;display:flex;align-items:center;gap:10px}
+  .eyebrow::before{content:"";width:26px;height:1px;background:var(--net)}
+  .hero h1{font-size:clamp(44px,8vw,104px);max-width:13ch}
+  .hero h1 em{font-style:normal;color:var(--clay)}
+  .hero p{max-width:46ch;margin-top:26px;font-size:18px;color:var(--muted)}
+  .hero-cta{margin-top:34px;display:flex;gap:14px;flex-wrap:wrap}
+  .btn{padding:14px 26px;border-radius:44px;font-weight:600;font-size:15px;cursor:pointer;border:none;font-family:inherit;transition:transform .15s}
+  .btn:hover{transform:translateY(-2px)}
+  .btn-primary{background:var(--clay);color:#fff}
+  .btn-ghost{background:transparent;color:var(--ink);border:1.5px solid var(--line)}
+
+  /* the ball arc — signature element */
+  .rally{position:absolute;top:0;right:0;width:48%;height:100%;pointer-events:none}
+  .rally svg{width:100%;height:100%}
+  .ball{fill:var(--clay)}
+  @media(max-width:820px){.rally{display:none}}
+
+  /* impact strip */
+  .impact{border-top:1px solid rgba(42,46,47,.14);border-bottom:1px solid rgba(42,46,47,.14);margin-top:50px}
+  .impact-in{display:grid;grid-template-columns:repeat(4,1fr)}
+  .stat{padding:26px 24px;border-right:1px solid rgba(42,46,47,.12)}
+  .stat:last-child{border-right:none}
+  .stat .num{font-family:'Bricolage Grotesque';font-weight:800;font-size:40px;letter-spacing:-0.03em;color:var(--ink)}
+  .stat .lbl{font-size:13px;color:var(--muted);margin-top:4px}
+  @media(max-width:680px){.impact-in{grid-template-columns:repeat(2,1fr)}.stat:nth-child(2){border-right:none}}
+
+  /* ---- shop ---- */
+  section{padding:72px 0}
+  .sec-head{display:flex;align-items:flex-end;justify-content:space-between;margin-bottom:38px;flex-wrap:wrap;gap:16px}
+  .sec-head h2{font-size:clamp(30px,4vw,46px)}
+  .sec-head .note{font-size:14px;color:var(--muted);max-width:34ch}
+  .grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px}
+  @media(max-width:880px){.grid{grid-template-columns:repeat(2,1fr)}}
+  @media(max-width:520px){.grid{grid-template-columns:1fr}}
+  .card{background:var(--paper-2);border-radius:18px;overflow:hidden;display:flex;flex-direction:column;border:1px solid rgba(42,46,47,.07);transition:transform .2s, box-shadow .2s}
+  .card:hover{transform:translateY(-4px);box-shadow:0 16px 40px -22px rgba(16,19,20,.4)}
+  .thumb{aspect-ratio:4/3.4;position:relative;display:grid;place-items:center;overflow:hidden}
+  .thumb svg{width:100%;height:100%}
+  .tag{position:absolute;top:12px;left:12px;background:var(--ink);color:var(--paper);font-family:'JetBrains Mono';font-size:10.5px;letter-spacing:.06em;padding:5px 9px;border-radius:30px}
+  .card-body{padding:18px 18px 20px;display:flex;flex-direction:column;gap:6px;flex:1}
+  .card-body h3{font-size:19px;font-weight:600;font-family:'Bricolage Grotesque'}
+  .card-body .fund{font-size:13px;color:var(--net);font-weight:500;display:flex;align-items:center;gap:6px}
+  .card-body .fund::before{content:"";width:6px;height:6px;border-radius:50%;background:var(--net)}
+  .card-foot{margin-top:auto;display:flex;align-items:center;justify-content:space-between;padding-top:14px}
+  .price{font-family:'JetBrains Mono';font-weight:500;font-size:16px}
+  .add{background:var(--ink);color:var(--paper);border:none;border-radius:40px;padding:9px 16px;font-size:13px;font-weight:600;cursor:pointer;font-family:inherit;transition:background .2s}
+  .add:hover{background:var(--clay)}
+
+  /* ---- story ---- */
+  .story{background:var(--ink);color:var(--paper)}
+  .story .wrap{display:grid;grid-template-columns:1.1fr .9fr;gap:54px;align-items:center}
+  @media(max-width:820px){.story .wrap{grid-template-columns:1fr;gap:30px}}
+  .story h2{font-size:clamp(28px,4vw,44px);color:var(--paper)}
+  .story p{color:#B9BFBC;margin-top:18px;font-size:16.5px}
+  .story .from{font-family:'JetBrains Mono';font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--clay);margin-bottom:18px}
+  .chain{display:flex;flex-direction:column;gap:14px}
+  .chain .step{display:flex;gap:16px;align-items:flex-start;padding:18px;background:rgba(247,245,239,.05);border:1px solid rgba(247,245,239,.1);border-radius:14px}
+  .chain .step .n{font-family:'JetBrains Mono';color:var(--clay);font-size:13px;padding-top:2px}
+  .chain .step h4{font-family:'Bricolage Grotesque';font-size:16px;margin-bottom:3px}
+  .chain .step p{margin:0;font-size:13.5px;color:#A7AEAB}
+
+  /* ---- impact proof (where the money goes) ---- */
+  .proof{background:var(--paper-2)}
+  .proof .lede{max-width:48ch;color:var(--muted);font-size:16.5px;margin-top:14px}
+  .proof-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;margin-top:42px}
+  @media(max-width:780px){.proof-grid{grid-template-columns:1fr}}
+  .proof-card{background:var(--paper);border:1px solid rgba(42,46,47,.1);border-radius:16px;overflow:hidden}
+  .proof-photo{aspect-ratio:4/3;background:linear-gradient(135deg,#1F6F5C 0%,#175043 100%);position:relative;display:grid;place-items:center;color:rgba(247,245,239,.55);font-family:'JetBrains Mono';font-size:11.5px;letter-spacing:.08em;text-align:center;padding:20px}
+  .proof-photo.alt{background:linear-gradient(135deg,#C8442B 0%,#A8371F 100%)}
+  .proof-photo.dark{background:linear-gradient(135deg,#2A2E2F 0%,#101314 100%)}
+  .proof-photo span{position:absolute;top:12px;left:12px;background:rgba(16,19,20,.4);padding:4px 9px;border-radius:20px;font-size:10px;letter-spacing:.06em}
+  .proof-card .pc-body{padding:20px}
+  .proof-card h4{font-family:'Bricolage Grotesque';font-size:18px;margin-bottom:6px}
+  .proof-card p{font-size:14px;color:var(--muted)}
+  .ledger{margin-top:42px;border:1px solid rgba(42,46,47,.14);border-radius:16px;overflow:hidden}
+  .ledger-row{display:flex;justify-content:space-between;align-items:center;padding:16px 22px;border-bottom:1px solid rgba(42,46,47,.1);font-size:15px}
+  .ledger-row:last-child{border-bottom:none;background:var(--ink);color:var(--paper)}
+  .ledger-row .lr-amt{font-family:'JetBrains Mono';font-size:14px}
+  .ledger-note{font-size:12.5px;color:var(--muted);margin-top:14px}
+
+  /* ---- fund a player (recurring) ---- */
+  .fund-sec .sec-head h2 em{font-style:normal;color:var(--clay)}
+  .tiers{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+  @media(max-width:780px){.tiers{grid-template-columns:1fr}}
+  .tier{border:1.5px solid rgba(42,46,47,.16);border-radius:18px;padding:28px 24px;display:flex;flex-direction:column;gap:8px;position:relative;background:var(--paper)}
+  .tier.featured{border-color:var(--clay);background:#fff}
+  .tier .badge{position:absolute;top:-11px;left:24px;background:var(--clay);color:#fff;font-family:'JetBrains Mono';font-size:10.5px;letter-spacing:.06em;padding:4px 11px;border-radius:20px}
+  .tier .tname{font-family:'Bricolage Grotesque';font-weight:600;font-size:18px}
+  .tier .tprice{font-family:'Bricolage Grotesque';font-weight:800;font-size:38px;letter-spacing:-0.03em;margin:4px 0}
+  .tier .tprice small{font-size:14px;font-weight:400;color:var(--muted);font-family:'Inter'}
+  .tier .tdesc{font-size:14px;color:var(--muted);min-height:42px}
+  .tier .pledge{margin-top:14px;background:var(--ink);color:var(--paper);border:none;border-radius:40px;padding:12px;font-weight:600;font-size:14px;cursor:pointer;font-family:inherit;transition:background .2s}
+  .tier.featured .pledge{background:var(--clay)}
+  .tier .pledge:hover{opacity:.9}
+
+  /* ---- trust / contact ---- */
+  .trust{background:var(--ink);color:var(--paper)}
+  .trust .wrap{display:grid;grid-template-columns:1fr 1fr;gap:54px}
+  @media(max-width:780px){.trust .wrap{grid-template-columns:1fr;gap:34px}}
+  .trust h2{color:var(--paper);font-size:clamp(26px,3.5vw,38px);margin-bottom:16px}
+  .trust p{color:#B9BFBC;font-size:15.5px;margin-bottom:14px}
+  .trust .who{display:flex;gap:14px;align-items:center;margin-top:8px}
+  .trust .who .av{width:46px;height:46px;border-radius:50%;background:var(--clay);display:grid;place-items:center;font-family:'Bricolage Grotesque';font-weight:800;color:#fff;flex-shrink:0}
+  .trust .who .av.green{background:var(--net)}
+  .trust .who h4{font-family:'Bricolage Grotesque';font-size:15px}
+  .trust .who span{font-size:13px;color:#A7AEAB}
+  .signup{display:flex;gap:10px;margin-top:18px;flex-wrap:wrap}
+  .signup input{flex:1;min-width:180px;padding:13px 16px;border-radius:40px;border:1px solid rgba(247,245,239,.2);background:rgba(247,245,239,.06);color:var(--paper);font-family:inherit;font-size:14px}
+  .signup input::placeholder{color:#8A918E}
+  .signup button{background:var(--clay);color:#fff;border:none;border-radius:40px;padding:13px 22px;font-weight:600;cursor:pointer;font-family:inherit;font-size:14px}
+  .trust .contact-row{font-size:14px;color:#B9BFBC;margin-top:18px;display:flex;flex-direction:column;gap:6px}
+  .trust .contact-row a{color:var(--paper);border-bottom:1px solid rgba(247,245,239,.3)}
+
+  /* ---- footer ---- */
+  footer{padding:54px 0 40px;border-top:1px solid rgba(42,46,47,.14)}
+  .foot-in{display:flex;justify-content:space-between;flex-wrap:wrap;gap:24px}
+  .foot-in p{font-size:13.5px;color:var(--muted);max-width:30ch}
+  .pay{display:flex;gap:10px;align-items:center;margin-top:14px;font-family:'JetBrains Mono';font-size:12px;color:var(--muted)}
+  .pay span{border:1px solid rgba(42,46,47,.2);padding:4px 9px;border-radius:6px}
+
+  /* ---- cart drawer ---- */
+  .scrim{position:fixed;inset:0;background:rgba(16,19,20,.45);opacity:0;visibility:hidden;transition:.25s;z-index:90}
+  .scrim.open{opacity:1;visibility:visible}
+  .drawer{position:fixed;top:0;right:0;height:100%;width:380px;max-width:90vw;background:var(--paper);z-index:100;transform:translateX(100%);transition:transform .3s cubic-bezier(.4,0,.2,1);display:flex;flex-direction:column}
+  .drawer.open{transform:translateX(0)}
+  .drawer-head{padding:22px 24px;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid rgba(42,46,47,.12)}
+  .drawer-head h3{font-size:20px}
+  .x{background:none;border:none;font-size:22px;cursor:pointer;color:var(--muted)}
+  .items{flex:1;overflow-y:auto;padding:8px 24px}
+  .line{display:flex;gap:14px;padding:16px 0;border-bottom:1px solid rgba(42,46,47,.1)}
+  .line .mini{width:54px;height:54px;border-radius:10px;background:var(--paper-2);flex-shrink:0;display:grid;place-items:center}
+  .line .mini svg{width:40px;height:40px}
+  .line .meta{flex:1}
+  .line .meta h4{font-size:14px;font-family:'Bricolage Grotesque'}
+  .line .meta .qty{display:flex;align-items:center;gap:10px;margin-top:8px}
+  .line .meta .qty button{width:24px;height:24px;border:1px solid rgba(42,46,47,.25);background:none;border-radius:6px;cursor:pointer;font-size:14px}
+  .line .meta .qty span{font-family:'JetBrains Mono';font-size:13px;min-width:16px;text-align:center}
+  .line .lp{font-family:'JetBrains Mono';font-size:14px}
+  .empty{text-align:center;color:var(--muted);padding:60px 20px;font-size:14px}
+  .drawer-foot{padding:22px 24px;border-top:1px solid rgba(42,46,47,.12)}
+  .give-line{display:flex;justify-content:space-between;font-size:13px;color:var(--net);margin-bottom:8px}
+  .tot-line{display:flex;justify-content:space-between;font-family:'Bricolage Grotesque';font-weight:800;font-size:20px;margin-bottom:16px}
+  .tot-line .mono{font-weight:500}
+  .checkout{width:100%;background:var(--clay);color:#fff;border:none;padding:15px;border-radius:44px;font-weight:600;font-size:15px;cursor:pointer;font-family:inherit}
+  .checkout:disabled{background:#C9C5BB;cursor:not-allowed}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="wrap nav-in">
+    <div class="brand"><span class="dot"></span>Play It Forward</div>
+    <div class="nav-links">
+      <a href="#shop">Shop</a>
+      <a href="#proof">Impact</a>
+      <a href="#fund">Fund a player</a>
+      <button class="cart-btn" onclick="openCart()">Cart <span class="count" id="count">0</span></button>
+    </div>
+  </div>
+</nav>
+
+<header class="hero">
+  <div class="rally">
+    <svg viewBox="0 0 600 700" preserveAspectRatio="xMidYMid meet">
+      <!-- table net line -->
+      <line x1="120" y1="350" x2="520" y2="350" stroke="#1F6F5C" stroke-width="2" stroke-dasharray="2 7" opacity="0.5"/>
+      <!-- rally arc -->
+      <path d="M40,500 Q200,180 320,300 T560,180" fill="none" stroke="#2A2E2F" stroke-width="1.5" stroke-dasharray="3 6" opacity="0.4"/>
+      <!-- paddles -->
+      <g transform="translate(60,470) rotate(-25)">
+        <ellipse cx="0" cy="0" rx="42" ry="52" fill="#C8442B"/>
+        <rect x="-7" y="48" width="14" height="40" rx="6" fill="#101314"/>
+      </g>
+      <g transform="translate(540,210) rotate(155)">
+        <ellipse cx="0" cy="0" rx="42" ry="52" fill="#101314"/>
+        <rect x="-7" y="48" width="14" height="40" rx="6" fill="#C8442B"/>
+      </g>
+      <!-- the ball, animated -->
+      <circle class="ball" r="13" cx="0" cy="0">
+        <animateMotion dur="3.4s" repeatCount="indefinite" keyPoints="0;1;0" keyTimes="0;0.5;1" calcMode="spline" keySplines="0.45 0 0.55 1; 0.45 0 0.55 1" path="M40,500 Q200,180 320,300 T560,180"/>
+      </circle>
+    </svg>
+  </div>
+  <div class="wrap">
+    <div class="eyebrow">Wandera &amp; Friends Cup · East Africa</div>
+    <h1>Every rally <em>passes</em> the game forward.</h1>
+    <p>Merch from the Cup that brought Kenya, Uganda, Tanzania and Zanzibar to one table. Proceeds put paddles in the hands of the players coming up next.</p>
+    <div class="hero-cta">
+      <button class="btn btn-primary" onclick="document.getElementById('shop').scrollIntoView()">Shop the drop</button>
+      <a href="#story"><button class="btn btn-ghost">How it works</button></a>
+    </div>
+  </div>
+  <div class="impact wrap" id="impact" style="max-width:1180px">
+    <div class="impact-in">
+      <div class="stat"><div class="num">4</div><div class="lbl">Nations at the table</div></div>
+      <div class="stat"><div class="num">100%</div><div class="lbl">Profit to Play It Forward</div></div>
+      <div class="stat"><div class="num" id="raised">0</div><div class="lbl">KSh raised in your cart</div></div>
+      <div class="stat"><div class="num">Mar '26</div><div class="lbl">First Cup hosted</div></div>
+    </div>
+  </div>
+</header>
+
+<section id="shop" class="wrap">
+  <div class="sec-head">
+    <h2>The Cup drop</h2>
+    <p class="note">A small, considered range. Each item names the player it helps fund — no abstractions.</p>
+  </div>
+  <div class="grid" id="grid"></div>
+</section>
+
+<section id="story" class="story">
+  <div class="wrap">
+    <div>
+      <div class="from">The Play It Forward chain</div>
+      <h2>One player's game funds the next one's first paddle.</h2>
+      <p>It started with the Wandera &amp; Friends Cup — registration fees became equipment, equipment reached upcoming players across the region. Merch keeps that chain moving between tournaments, so the giving doesn't stop when the nets come down.</p>
+    </div>
+    <div class="chain">
+      <div class="step"><span class="n">01</span><div><h4>You buy a piece</h4><p>Apparel and gear carrying the Cup's identity.</p></div></div>
+      <div class="step"><span class="n">02</span><div><h4>Profit pools into PIF</h4><p>The full margin goes to the initiative, not overhead.</p></div></div>
+      <div class="step"><span class="n">03</span><div><h4>An upcoming player gets equipped</h4><p>Paddles, balls, and table time for the next generation.</p></div></div>
+    </div>
+  </div>
+</section>
+
+<section class="proof" id="proof">
+  <div class="wrap">
+    <div class="sec-head" style="margin-bottom:0">
+      <div>
+        <div class="eyebrow" style="color:var(--clay)">Where your money goes</div>
+        <h2>March 2026, in receipts.</h2>
+        <p class="lede">The first Wandera &amp; Friends Cup wasn't a promise — it already happened. Here's what registration fees turned into, and who received it.</p>
+      </div>
+    </div>
+
+    <div class="proof-grid">
+      <div class="proof-card">
+        <div class="proof-photo"><span>Cup day</span>Replace with: Cup<br>group photo</div>
+        <div class="pc-body"><h4>4 nations, one table</h4><p>Players travelled from Kenya, Uganda, Tanzania and Zanzibar to compete in Nairobi.</p></div>
+      </div>
+      <div class="proof-card">
+        <div class="proof-photo alt"><span>Handover</span>Replace with: equipment<br>handover photo</div>
+        <div class="pc-body"><h4>Fees became equipment</h4><p>Registration money was spent directly on paddles, balls and gear for the next intake.</p></div>
+      </div>
+      <div class="proof-card">
+        <div class="proof-photo dark"><span>Play It Forward</span>Replace with: upcoming<br>player photo</div>
+        <div class="pc-body"><h4>Reaching upcoming players</h4><p>Equipment was distributed to young players starting out in the region.</p></div>
+      </div>
+    </div>
+
+    <div class="ledger">
+      <div class="ledger-row"><span>Awards &amp; prizes — funded by The Friends Behind the Cup</span><span class="lr-amt">Sponsored</span></div>
+      <div class="ledger-row"><span>Equipment for upcoming players — from registration fees</span><span class="lr-amt">Distributed</span></div>
+      <div class="ledger-row"><span>Going forward — funded by you, through merch &amp; pledges</span><span class="lr-amt">Ongoing</span></div>
+    </div>
+    <p class="ledger-note">Placeholder figures. Swap in your real March totals — a specific number (e.g. “KSh 84,000 raised · 12 players equipped”) lands far harder than “proceeds support youth.”</p>
+  </div>
+</section>
+
+<section class="fund-sec wrap" id="fund">
+  <div class="sec-head">
+    <div>
+      <div class="eyebrow" style="color:var(--net)">Keep it going year-round</div>
+      <h2>Or <em>fund a player</em> every month.</h2>
+    </div>
+    <p class="note">Merch comes in drops. A monthly pledge is what makes Play It Forward steady between tournaments.</p>
+  </div>
+  <div class="tiers">
+    <div class="tier">
+      <div class="tname">Friend</div>
+      <div class="tprice">KSh 500<small>/mo</small></div>
+      <div class="tdesc">Keeps a player in balls and table time through the season.</div>
+      <button class="pledge" onclick="pledge('Friend','KSh 500/mo')">Pledge monthly</button>
+    </div>
+    <div class="tier featured">
+      <div class="badge">Most chosen</div>
+      <div class="tname">Backer</div>
+      <div class="tprice">KSh 1,500<small>/mo</small></div>
+      <div class="tdesc">Equips one upcoming player with a paddle and kit each season.</div>
+      <button class="pledge" onclick="pledge('Backer','KSh 1,500/mo')">Pledge monthly</button>
+    </div>
+    <div class="tier">
+      <div class="tname">Patron</div>
+      <div class="tprice">KSh 4,000<small>/mo</small></div>
+      <div class="tdesc">Sponsors a player's full year — gear, entry fees and coaching.</div>
+      <button class="pledge" onclick="pledge('Patron','KSh 4,000/mo')">Pledge monthly</button>
+    </div>
+  </div>
+</section>
+
+<section class="trust">
+  <div class="wrap">
+    <div>
+      <h2>Who's behind the Cup</h2>
+      <p>Play It Forward is a community initiative of the Wandera &amp; Friends Cup, run from Nairobi. Awards are supported by The Friends Behind the Cup; equipment for upcoming players comes from registration fees and now from what you buy and pledge here.</p>
+      <div class="who"><div class="av">W</div><div><h4>Wandera &amp; Friends Cup</h4><span>Founder &amp; organiser · Nairobi, Kenya</span></div></div>
+      <div class="who"><div class="av green">F</div><div><h4>The Friends Behind the Cup</h4><span>Awards &amp; prize support</span></div></div>
+      <div class="contact-row">
+        <span>Reach us: <a href="mailto:hello@playitforward.africa">hello@playitforward.africa</a></span>
+        <span>Follow the Cup: <a href="#">@wanderacup</a></span>
+      </div>
+    </div>
+    <div>
+      <h2>Don't miss the next drop</h2>
+      <p>New merch lands around each tournament. Leave your email and we'll tell you when the next drop — and the next Cup — opens.</p>
+      <div class="signup">
+        <input type="email" id="email" placeholder="you@email.com" aria-label="Email address">
+        <button onclick="subscribe()">Notify me</button>
+      </div>
+      <p style="font-size:12.5px;color:#8A918E;margin-top:10px">No spam — only drop dates and Cup news.</p>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap foot-in">
+    <div>
+      <div class="brand" style="margin-bottom:10px"><span class="dot"></span>Play It Forward</div>
+      <p>A community initiative of the Wandera &amp; Friends Cup. Built in Nairobi for East African table tennis.</p>
+    </div>
+    <div>
+      <div class="mono" style="font-size:12px;color:var(--muted);text-transform:uppercase;letter-spacing:.1em;margin-bottom:6px">Pay with</div>
+      <div class="pay"><span>M-Pesa</span><span>Airtel Money</span><span>Card</span></div>
+    </div>
+  </div>
+</footer>
+
+<!-- cart -->
+<div class="scrim" id="scrim" onclick="closeCart()"></div>
+<aside class="drawer" id="drawer" aria-label="Cart">
+  <div class="drawer-head"><h3>Your cart</h3><button class="x" onclick="closeCart()">✕</button></div>
+  <div class="items" id="items"></div>
+  <div class="drawer-foot">
+    <div class="give-line"><span>↳ Goes to Play It Forward</span><span class="mono" id="give">KSh 0</span></div>
+    <div class="tot-line"><span>Total</span><span class="mono" id="total">KSh 0</span></div>
+    <button class="checkout" id="checkout" disabled onclick="checkout()">Checkout</button>
+  </div>
+</aside>
+
+<script>
+// product SVGs (no external assets) — paddle, jersey, ball tube, cap
+const art = {
+  paddle:`<svg viewBox="0 0 200 200"><rect width="200" height="200" fill="#EEEBE2"/><g transform="translate(100,92)"><ellipse rx="56" ry="66" fill="#C8442B"/><ellipse rx="44" ry="54" fill="#A8371F"/><rect x="-9" y="60" width="18" height="52" rx="8" fill="#101314"/></g></svg>`,
+  tee:`<svg viewBox="0 0 200 200"><rect width="200" height="200" fill="#EEEBE2"/><path d="M70 50 L55 65 L45 95 L62 100 L66 150 L134 150 L138 100 L155 95 L145 65 L130 50 L115 58 Q100 70 85 58 Z" fill="#101314"/><circle cx="100" cy="100" r="11" fill="#C8442B"/></svg>`,
+  tube:`<svg viewBox="0 0 200 200"><rect width="200" height="200" fill="#EEEBE2"/><rect x="78" y="48" width="44" height="110" rx="12" fill="#1F6F5C"/><circle cx="100" cy="72" r="13" fill="#F7F5EF"/><circle cx="100" cy="102" r="13" fill="#F7F5EF"/><circle cx="100" cy="132" r="13" fill="#F7F5EF"/></svg>`,
+  cap:`<svg viewBox="0 0 200 200"><rect width="200" height="200" fill="#EEEBE2"/><path d="M55 118 Q60 70 100 70 Q140 70 145 110 L150 118 Z" fill="#101314"/><path d="M55 118 L40 128 L60 130 L150 130 L150 118 Z" fill="#C8442B"/><circle cx="100" cy="74" r="6" fill="#C8442B"/></svg>`,
+  hoodie:`<svg viewBox="0 0 200 200"><rect width="200" height="200" fill="#EEEBE2"/><path d="M68 52 L52 68 L44 100 L60 104 L64 152 L136 152 L140 104 L156 100 L148 68 L132 52 Q116 64 100 64 Q84 64 68 52 Z" fill="#1F6F5C"/><path d="M84 52 Q100 78 116 52 L110 50 Q100 60 90 50 Z" fill="#175043"/></svg>`,
+  towel:`<svg viewBox="0 0 200 200"><rect width="200" height="200" fill="#EEEBE2"/><rect x="58" y="50" width="84" height="100" rx="6" fill="#F7F5EF" stroke="#101314" stroke-width="3"/><line x1="58" y1="70" x2="142" y2="70" stroke="#C8442B" stroke-width="4"/><line x1="58" y1="130" x2="142" y2="130" stroke="#C8442B" stroke-width="4"/><circle cx="100" cy="100" r="14" fill="none" stroke="#1F6F5C" stroke-width="3"/></svg>`
+};
+
+const products = [
+  {id:1, name:"Cup Rally Tee", art:"tee", price:2500, give:1100, tag:"Apparel", fund:"Funds 1 ball pack"},
+  {id:2, name:"Four Nations Hoodie", art:"hoodie", price:4500, give:2000, tag:"Apparel", fund:"Funds half a paddle"},
+  {id:3, name:"PIF Training Paddle", art:"paddle", price:3800, give:1800, tag:"Gear", fund:"Equips 1 starter"},
+  {id:4, name:"Match Ball Tube ×3", art:"tube", price:1200, give:600, tag:"Gear", fund:"Funds a session"},
+  {id:5, name:"Wandera Cap", art:"cap", price:1800, give:800, tag:"Apparel", fund:"Funds 1 ball pack"},
+  {id:6, name:"Bench Towel", art:"towel", price:1500, give:700, tag:"Kit", fund:"Funds a session"},
+];
+
+const cart = {};
+const fmt = n => "KSh " + n.toLocaleString();
+
+function renderGrid(){
+  document.getElementById('grid').innerHTML = products.map(p=>`
+    <div class="card">
+      <div class="thumb"><span class="tag">${p.tag}</span>${art[p.art]}</div>
+      <div class="card-body">
+        <h3>${p.name}</h3>
+        <div class="fund">${p.fund}</div>
+        <div class="card-foot">
+          <span class="price">${fmt(p.price)}</span>
+          <button class="add" onclick="add(${p.id})">Add</button>
+        </div>
+      </div>
+    </div>`).join('');
+}
+
+function add(id){ cart[id]=(cart[id]||0)+1; renderCart(); openCart(); }
+function inc(id){ cart[id]++; renderCart(); }
+function dec(id){ cart[id]--; if(cart[id]<=0) delete cart[id]; renderCart(); }
+
+function renderCart(){
+  const ids = Object.keys(cart);
+  let total=0, give=0, count=0;
+  const items = document.getElementById('items');
+  if(!ids.length){
+    items.innerHTML = `<div class="empty">Nothing here yet.<br>Every piece you add funds a player coming up.</div>`;
+  } else {
+    items.innerHTML = ids.map(id=>{
+      const p = products.find(x=>x.id==id), q=cart[id];
+      total += p.price*q; give += p.give*q; count += q;
+      return `<div class="line">
+        <div class="mini">${art[p.art]}</div>
+        <div class="meta">
+          <h4>${p.name}</h4>
+          <div class="qty"><button onclick="dec(${id})">−</button><span>${q}</span><button onclick="inc(${id})">+</button></div>
+        </div>
+        <div class="lp">${fmt(p.price*q)}</div>
+      </div>`;
+    }).join('');
+  }
+  document.getElementById('total').textContent = fmt(total);
+  document.getElementById('give').textContent = fmt(give);
+  document.getElementById('count').textContent = count;
+  document.getElementById('raised').textContent = give.toLocaleString();
+  document.getElementById('checkout').disabled = !count;
+}
+
+function openCart(){ document.getElementById('drawer').classList.add('open'); document.getElementById('scrim').classList.add('open'); }
+function closeCart(){ document.getElementById('drawer').classList.remove('open'); document.getElementById('scrim').classList.remove('open'); }
+function checkout(){
+  const give = Object.keys(cart).reduce((s,id)=>s+products.find(x=>x.id==id).give*cart[id],0);
+  alert(`Thank you — you've sent ${fmt(give)} to Play It Forward.\n\nNext: an M-Pesa prompt would arrive here. A real player gets equipped because of this.`);
+}
+
+renderGrid(); renderCart();
+document.addEventListener('keydown',e=>{ if(e.key==='Escape') closeCart(); });
+
+function pledge(tier, amt){
+  alert(`You're pledging the ${tier} tier — ${amt}.\n\nNext: a recurring M-Pesa setup would start here. This is the income that keeps Play It Forward steady between tournaments.`);
+}
+function subscribe(){
+  const e = document.getElementById('email');
+  if(!e.value || !e.value.includes('@')){ e.focus(); return; }
+  e.value = '';
+  alert("You're on the list — we'll tell you when the next drop opens.");
+}
+</script>
+</body>
+</html>
