@@ -80,6 +80,7 @@
   .card:hover{transform:translateY(-4px);box-shadow:0 16px 40px -22px rgba(16,19,20,.4)}
   .thumb{aspect-ratio:4/3.4;position:relative;display:grid;place-items:center;overflow:hidden}
   .thumb svg{width:100%;height:100%}
+  .thumb img{width:100%;height:100%;object-fit:cover}
   .tag{position:absolute;top:12px;left:12px;background:var(--ink);color:var(--paper);font-family:'JetBrains Mono';font-size:10.5px;letter-spacing:.06em;padding:5px 9px;border-radius:30px}
   .card-body{padding:18px 18px 20px;display:flex;flex-direction:column;gap:6px;flex:1}
   .card-body h3{font-size:19px;font-weight:600;font-family:'Bricolage Grotesque'}
@@ -112,6 +113,7 @@
   .proof-photo{aspect-ratio:4/3;background:linear-gradient(135deg,#1F6F5C 0%,#175043 100%);position:relative;display:grid;place-items:center;color:rgba(247,245,239,.55);font-family:'JetBrains Mono';font-size:11.5px;letter-spacing:.08em;text-align:center;padding:20px}
   .proof-photo.alt{background:linear-gradient(135deg,#C8442B 0%,#A8371F 100%)}
   .proof-photo.dark{background:linear-gradient(135deg,#2A2E2F 0%,#101314 100%)}
+  .proof-photo img{width:100%;height:100%;object-fit:cover;position:absolute;inset:0}
   .proof-photo span{position:absolute;top:12px;left:12px;background:rgba(16,19,20,.4);padding:4px 9px;border-radius:20px;font-size:10px;letter-spacing:.06em}
   .proof-card .pc-body{padding:20px}
   .proof-card h4{font-family:'Bricolage Grotesque';font-size:18px;margin-bottom:6px}
@@ -174,6 +176,7 @@
   .line{display:flex;gap:14px;padding:16px 0;border-bottom:1px solid rgba(42,46,47,.1)}
   .line .mini{width:54px;height:54px;border-radius:10px;background:var(--paper-2);flex-shrink:0;display:grid;place-items:center}
   .line .mini svg{width:40px;height:40px}
+  .line .mini img{width:100%;height:100%;object-fit:cover;border-radius:10px}
   .line .meta{flex:1}
   .line .meta h4{font-size:14px;font-family:'Bricolage Grotesque'}
   .line .meta .qty{display:flex;align-items:center;gap:10px;margin-top:8px}
@@ -393,12 +396,12 @@ const art = {
 };
 
 const products = [
-  {id:1, name:"Cup Rally Tee", art:"tee", price:2500, give:1100, tag:"Apparel", fund:"Funds 1 ball pack"},
-  {id:2, name:"Four Nations Hoodie", art:"hoodie", price:4500, give:2000, tag:"Apparel", fund:"Funds half a paddle"},
-  {id:3, name:"PIF Training Paddle", art:"paddle", price:3800, give:1800, tag:"Gear", fund:"Equips 1 starter"},
-  {id:4, name:"Match Ball Tube ×3", art:"tube", price:1200, give:600, tag:"Gear", fund:"Funds a session"},
-  {id:5, name:"Wandera Cap", art:"cap", price:1800, give:800, tag:"Apparel", fund:"Funds 1 ball pack"},
-  {id:6, name:"Bench Towel", art:"towel", price:1500, give:700, tag:"Kit", fund:"Funds a session"},
+  {id:1, name:"Cup Rally Tee", art:"tee", img:"images/tee.jpg", price:2500, give:1100, tag:"Apparel", fund:"Funds 1 ball pack"},
+  {id:2, name:"Four Nations Hoodie", art:"hoodie", img:"images/hoodie.jpg", price:4500, give:2000, tag:"Apparel", fund:"Funds half a paddle"},
+  {id:3, name:"PIF Training Paddle", art:"paddle", img:"images/paddle.jpg", price:3800, give:1800, tag:"Gear", fund:"Equips 1 starter"},
+  {id:4, name:"Match Ball Tube ×3", art:"tube", img:"images/tube.jpg", price:1200, give:600, tag:"Gear", fund:"Funds a session"},
+  {id:5, name:"Wandera Cap", art:"cap", img:"images/cap.jpg", price:1800, give:800, tag:"Apparel", fund:"Funds 1 ball pack"},
+  {id:6, name:"Bench Towel", art:"towel", img:"images/towel.jpg", price:1500, give:700, tag:"Kit", fund:"Funds a session"},
 ];
 
 const cart = {};
@@ -407,7 +410,7 @@ const fmt = n => "KSh " + n.toLocaleString();
 function renderGrid(){
   document.getElementById('grid').innerHTML = products.map(p=>`
     <div class="card">
-      <div class="thumb"><span class="tag">${p.tag}</span>${art[p.art]}</div>
+      <div class="thumb"><span class="tag">${p.tag}</span>${p.img ? `<img src="${p.img}" alt="${p.name}" onerror="this.outerHTML=art['${p.art}']">` : art[p.art]}</div>
       <div class="card-body">
         <h3>${p.name}</h3>
         <div class="fund">${p.fund}</div>
@@ -434,7 +437,7 @@ function renderCart(){
       const p = products.find(x=>x.id==id), q=cart[id];
       total += p.price*q; give += p.give*q; count += q;
       return `<div class="line">
-        <div class="mini">${art[p.art]}</div>
+        <div class="mini">${p.img ? `<img src="${p.img}" alt="${p.name}" onerror="this.outerHTML=art['${p.art}']">` : art[p.art]}</div>
         <div class="meta">
           <h4>${p.name}</h4>
           <div class="qty"><button onclick="dec(${id})">−</button><span>${q}</span><button onclick="inc(${id})">+</button></div>
